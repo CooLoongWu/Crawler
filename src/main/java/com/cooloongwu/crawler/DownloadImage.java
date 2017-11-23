@@ -14,12 +14,24 @@ import java.net.URLConnection;
 public class DownloadImage {
 
     public static void download(String urlString, String filename, String savePath) throws Exception {
+
         // 构造URL
         URL url = new URL(urlString);
+
+        try {
+            url.openStream();
+        } catch (Exception e) {
+            System.out.println("不是有效的图片地址：" + urlString);
+            return;
+        }
+
+
         // 打开连接
         URLConnection con = url.openConnection();
+
         //设置请求超时为5s
         con.setConnectTimeout(5 * 1000);
+
         // 输入流
         InputStream is = con.getInputStream();
 
@@ -38,7 +50,9 @@ public class DownloadImage {
             os.write(bs, 0, len);
         }
         // 完毕，关闭所有链接
+        System.out.println(filename + "下载完毕！");
         os.close();
         is.close();
+
     }
 }
